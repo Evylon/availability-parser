@@ -93,9 +93,6 @@ Your availability parser
     server.ehlo() # Can be omitted
     server.login(mailconfig['mailuser'], mailconfig['password'])
     server.sendmail(mailconfig['sender'], mailconfig['receiver'], message)
-    # with smtplib.SMTP_SSL(mailconfig['smtphost'], mailconfig['port'], context=context) as server:
-    #     server.login(mailconfig['mailuser'], mailconfig['password'])
-    #     server.sendmail(mailconfig['sender'], mailconfig['receiver'], message)
 
 def getTime():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
