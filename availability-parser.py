@@ -11,9 +11,9 @@ def main():
     if not config:
         exit(-1)
     if not isAvailable(config['targetUrl']):
-        Log.log(Log.info, 'item is not available')
+        Log.log(Log.info, 'item {0} is not available'.format(config['targetUrl']))
     else:
-        Log.log(Log.info, 'HURRAY! THE ITEM IS AVAILABLE!')
+        Log.log(Log.info, 'HURRAY! THE ITEM {0} IS AVAILABLE!'.format(config['targetUrl']))
         for receiver in config['receivers']:
             sendMail(config, receiver)
 
