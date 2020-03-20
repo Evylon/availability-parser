@@ -37,7 +37,7 @@ def loadMailConfig():
     configFields = ['mailuser', 'password', 'sender', 'receiver', 'smtphost', 'port']
     # check if file exists
     if not os.path.isfile(configFilename):
-        Log.log(Log.error, 'File "{0}" not found. Creating empty config file, please fill in the empty fiels'.format(configFilename))
+        Log.log(Log.error, 'File "{0}" not found. Creating empty config file, please fill in the empty fields'.format(configFilename))
         createEmptyMailconfig(configFilename, configFields)
         return None
     # try loading the mailconfig
