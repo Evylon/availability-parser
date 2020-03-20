@@ -67,7 +67,7 @@ def createEmptyMailconfig(filename, defaultConfig):
 def saveOldMailconfig(filename):
     if not os.path.exists(filename):
         return
-    targetFileName = '{0}_old.json'.format(os.path.splitext(filename)[0])
+    targetFileName = '{0}_{1}.json'.format(os.path.splitext(filename)[0], getTimeForFilename())
     if os.path.exists(targetFileName):
         os.remove(targetFileName)
     os.rename(filename, targetFileName)
@@ -98,8 +98,11 @@ Your availability parser
     server.login(mailconfig['mailuser'], mailconfig['password'])
     server.sendmail(mailconfig['sender'], receiver, message)
 
-def getTime():
+def getLogTime():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+def getTimeForFilename():
+    return datetime.now().strftime("%Y-%m-%d-%H%M%S")
 
 class Log:
     error = 'ERROR'
@@ -107,7 +110,7 @@ class Log:
 
     @staticmethod
     def log(tag, message):
-        print('[{time}] [{tag}] {message}'.format(time = getTime(), tag = tag, message = message))
+        print('[{time}] [{tag}] {message}'.format(time = getLogTime(), tag = tag, message = message))
 
 if __name__ == "__main__":
     main()
