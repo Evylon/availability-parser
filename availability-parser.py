@@ -97,6 +97,7 @@ Your availability parser
     server.ehlo() # Can be omitted
     server.login(mailconfig['mailuser'], mailconfig['password'])
     server.sendmail(mailconfig['sender'], receiver, message)
+    Log.log(Log.debug, 'Sucessfully sent mail to {0}'.format(receiver))
 
 def getLogTime():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -107,6 +108,7 @@ def getTimeForFilename():
 class Log:
     error = 'ERROR'
     info = 'INFO'
+    debug = 'DEBUG'
 
     @staticmethod
     def log(tag, message):
