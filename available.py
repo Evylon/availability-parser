@@ -33,7 +33,8 @@ def isAvailable(url):
 
 def loadMailConfig():
     # constants
-    configFilename = 'mailconfig.json'
+    configPath = os.path.dirname(__file__)
+    configFilename = os.path.join(configPath, 'mailconfig.json')
     configFields = ['mailuser', 'password', 'sender', 'receiver', 'smtphost', 'port']
     # check if file exists
     if not os.path.isfile(configFilename):
