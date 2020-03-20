@@ -10,20 +10,20 @@ def main():
     config = loadConfig()
     if not config:
         exit(-1)
-    if not isAvailable(config['targetUrl']):
-        Log.log(Log.info, 'item {0} is not available'.format(config['targetUrl']))
+    if not isOutOfStock(config['targetUrl']):
+        Log.log(Log.info, 'item {0} is still out of stock'.format(config['targetUrl']))
     else:
-        Log.log(Log.info, 'HURRAY! THE ITEM {0} IS AVAILABLE!'.format(config['targetUrl']))
+        Log.log(Log.info, 'HURRAY! THE ITEM {0} IS NO LONGER OUT OF STOCK!'.format(config['targetUrl']))
         for receiver in config['receivers']:
             sendMail(config, receiver)
 
-def isAvailable(url):
-    # if this string is in the html body, the item is unavailable
+def isOutOfStock(url):
+    # if this string is in the html body, the item is out of stock
     target = '<divclass="stock-container"><spanclass="stockstock--X"></span>Nichtverf'
     # fetch html from url and remove newline and whitespace
     html = urllib.request.urlopen(url).read()
     html = str(html).replace(' ', '').replace('\\n', '')
-    return not target in html
+    return target in html
 
 def loadConfig():
     # constants
@@ -69,16 +69,16 @@ def sendMail(config, receiver):
     message = """\
 From: {sender}
 To: {receiver}
-Subject: The item you are obeserving is available!
+Subject: The item you are obeserving is no longer out of stock!
 
 Hi {receiver},
 
 the item you are obeserving on
 {url}
-is now available!
+is no longer out of stock!
 
 Kind regards
-Your availability parser
+Your out-of-stock parser
 """.format(sender = config['sender'], receiver = receiver, url = config['targetUrl'])
 
     # Create a secure SSL context
