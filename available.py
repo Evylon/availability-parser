@@ -72,6 +72,8 @@ def saveOldMailconfig(filename):
 
 def sendMail(mailconfig, url):
     message = """\
+From: {sender}
+To: {receiver}
 Subject: The item you are obeserving is available!
 
 Hi {receiver},
@@ -82,7 +84,7 @@ is now available!
 
 Kind regards
 Your availability parser
-""".format(receiver = mailconfig['receiver'], url = url)
+""".format(sender = mailconfig['sender'], receiver = mailconfig['receiver'], url = url)
 
     # Create a secure SSL context
     context = ssl.create_default_context()
