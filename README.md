@@ -24,4 +24,8 @@ Sender, receiver, mailserver and the observed url can be configured in a ```conf
 }
 ```
 
-    
+# Requirements
+Python3 and access to a mail account
+
+# Usage
+setup the config.json as described above. Then simply execute the ```out-of-stock-parser.py```
