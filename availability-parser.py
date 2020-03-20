@@ -20,7 +20,8 @@ def main():
         Log.log(Log.info, 'item is not available')
     else:
         Log.log(Log.info, 'HURRAY! THE ITEM IS AVAILABLE!')
-        sendMail(mailconfig, url)
+        for receiver in mailconfig['receivers']:
+            sendMail(mailconfig, receiver, url)
 
 def isAvailable(url):
     # if this string is in the html body, the item is unavailable
@@ -35,11 +36,11 @@ def loadMailConfig():
     # constants
     configPath = os.path.dirname(__file__)
     configFilename = os.path.join(configPath, 'mailconfig.json')
-    configFields = ['mailuser', 'password', 'sender', 'receiver', 'smtphost', 'port']
+    defaultConfig = {'mailuser': '', 'password': '', 'sender': '', 'receivers': [''], 'smtphost': '', 'port': ''}
     # check if file exists
     if not os.path.isfile(configFilename):
         Log.log(Log.error, 'File "{0}" not found. Creating empty config file, please fill in the empty fields'.format(configFilename))
-        createEmptyMailconfig(configFilename, configFields)
+        createEmptyMailconfig(configFilename, defaultConfig)
         return None
     # try loading the mailconfig
     with open(configFilename, 'r') as configFile:
@@ -47,21 +48,21 @@ def loadMailConfig():
             mailconfig = json.load(configFile)
         except json.decoder.JSONDecodeError:
             Log.log(Log.error, 'Corrupt mailconfig. Creating empty config file, please fill in the empty fiels')
-            createEmptyMailconfig(configFilename, configFields)
+            createEmptyMailconfig(configFilename, defaultConfig)
             return None
     # check all fields exists
-    for key in configFields:
-        if not key in mailconfig:
-            Log.log(Log.error, 'File "mail.config" incomplete. {0} is missing. Renaming old config file and generating new config'.format(key))
-            createEmptyMailconfig(configFilename, configFields)
+    for key in defaultConfig:
+        if not key in mailconfig or type(defaultConfig[key]) is not type(mailconfig[key]):
+            Log.log(Log.error, 'File "mail.config" incomplete. {0} is missing or invalid. Renaming old config file and generating new config'.format(key))
+            createEmptyMailconfig(configFilename, defaultConfig)
             return None
     # return valid mailconfig
     return mailconfig
 
-def createEmptyMailconfig(filename, configFields):
+def createEmptyMailconfig(filename, defaultConfig):
     saveOldMailconfig(filename)
     with open(filename, 'w') as configFile:
-        json.dump({field: '' for field in configFields}, configFile)
+        json.dump(defaultConfig, configFile)
 
 def saveOldMailconfig(filename):
     if not os.path.exists(filename):
@@ -71,7 +72,7 @@ def saveOldMailconfig(filename):
         os.remove(targetFileName)
     os.rename(filename, targetFileName)
 
-def sendMail(mailconfig, url):
+def sendMail(mailconfig, receiver, url):
     message = """\
 From: {sender}
 To: {receiver}
@@ -85,7 +86,7 @@ is now available!
 
 Kind regards
 Your availability parser
-""".format(sender = mailconfig['sender'], receiver = mailconfig['receiver'], url = url)
+""".format(sender = mailconfig['sender'], receiver = receiver, url = url)
 
     # Create a secure SSL context
     context = ssl.create_default_context()
@@ -95,7 +96,7 @@ Your availability parser
     server.starttls(context=context) # Secure the connection
     server.ehlo() # Can be omitted
     server.login(mailconfig['mailuser'], mailconfig['password'])
-    server.sendmail(mailconfig['sender'], mailconfig['receiver'], message)
+    server.sendmail(mailconfig['sender'], receiver, message)
 
 def getTime():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
