@@ -11,10 +11,10 @@ def main():
     if not mailconfig:
         exit(-1)
 
-    # reference url for an item that is available
-    # url = 'https://www.carlroth.com/de/de/buersten-reinigungsschwaemme/reinigungsbuerste-rotilabo/p/xk76.1'
     # desired url of an item that is currently not available
     url = 'https://www.carlroth.com/de/de/loesungen-fuer-die-gram-faerbung/ethanol-96-%25-vergaellt/p/t171.4'
+    # reference url for an item that is available
+    # url = 'https://www.carlroth.com/de/de/buersten-reinigungsschwaemme/reinigungsbuerste-rotilabo/p/xk76.1'
 
     if not isAvailable(url):
         Log.log(Log.info, 'item is not available')
