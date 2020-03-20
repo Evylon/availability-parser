@@ -1,9 +1,7 @@
-# availability-parser
-parse https://www.carlroth.com if status of an item is 'not available'
+# Out-of-stock parser
+Small Parser with a bit config for checking if an item at https://www.carlroth.com is out of stock
 
-Small Parser with a bit config for checking the availability of an item at https://www.carlroth.com
-
-The parser simply fetches the html code from a desired url and checks if it includes a desired substring. If the substring is not contained within the html code, a mail is send to a predefined mailadress.
+The parser simply fetches the html code from a desired url and checks if it includes a desired substring that indicates that the item is out of stock. If the substring is not contained within the html code, a mail is send to a predefined mailadress.
 
 Sender, receiver, mailserver and the observed url can be configured in a ```config.json``` with the following format:
 
@@ -21,7 +19,7 @@ Sender, receiver, mailserver and the observed url can be configured in a ```conf
   "smtphost": "example.com",
   # port of the smtp server. Usually 465 or 587
   "port": "465",
-  # desired url of an item that is currently not available 
+  # desired url of an item that is currently out of stock 
   "targetUrl": "https://www.example.com"
 }
 ```
