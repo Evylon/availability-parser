@@ -10,7 +10,7 @@ def main():
     config = loadConfig()
     if not config:
         exit(-1)
-    if not isOutOfStock(config['targetUrl']):
+    if isOutOfStock(config['targetUrl']):
         Log.log(Log.info, 'item {0} is still out of stock'.format(config['targetUrl']))
     else:
         Log.log(Log.info, 'HURRAY! THE ITEM {0} IS NO LONGER OUT OF STOCK!'.format(config['targetUrl']))
