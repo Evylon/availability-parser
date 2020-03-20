@@ -98,7 +98,7 @@ Your availability parser
     server.sendmail(mailconfig['sender'], mailconfig['receiver'], message)
 
 def getTime():
-    return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 class Log:
     error = 'ERROR'
@@ -106,7 +106,7 @@ class Log:
 
     @staticmethod
     def log(tag, message):
-        print('[{tag}] {time} {message}'.format(time = getTime, tag = tag, message = message))
+        print('[{time}] [{tag}] {message}'.format(time = getTime(), tag = tag, message = message))
 
 if __name__ == "__main__":
     main()
